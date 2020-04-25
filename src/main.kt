@@ -23,7 +23,7 @@ class MidiDrawing() : PApplet() {
         }
         val device = MidiSystem.getMidiDevice(midiDevices[1])
         if (!device.isOpen) {
-            println("Opening device")
+            println("Opening device ")
             try {
                 device.open()
                 println(device.deviceInfo)
