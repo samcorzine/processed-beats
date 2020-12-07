@@ -1,6 +1,10 @@
 package processedbeats
 
 import processing.core.PApplet
+import java.time.DateTimeException
+import java.time.LocalDateTime
+import java.time.Duration
+import java.util.*
 import javax.sound.midi.MidiSystem
 import javax.sound.midi.MidiUnavailableException
 import javax.sound.midi.Transmitter
@@ -8,12 +12,18 @@ import javax.sound.midi.Transmitter
 class MidiDrawing() : PApplet() {
 
     val color = 100f
-    var radius = 100f
-    val positionX = 240f
-    val positionY = 240f
-    val alpha = 100f
+    val alpha = 200f
 
-    val theCircle = Circle(Pair(positionX, positionY), radius)
+    val fieldState = FieldState(LocalDateTime.now(), 0, LocalDateTime.now(), 0)
+    val indices = 1..100
+    val randomX = indices.map{Random().nextFloat()}// generated random from 1 to 9 included
+    val randomY = indices.map{Random().nextFloat()}// generated random from 1 to 9 included
+
+
+    val particleState = ParticleState(
+            randomX.zip(randomY).map{pair -> Particle((pair.first - 0.5f) * 2, (pair.second - 0.5f) * 2)},
+            fieldState
+    )
 
     fun theTransmitter(): Transmitter {
         val midiDevices = MidiSystem.getMidiDeviceInfo()
@@ -39,11 +49,11 @@ class MidiDrawing() : PApplet() {
 
     val transmitter = theTransmitter()
 
-    val midiHandler = MidiHandler(theCircle)
+    val midiHandler = StateMidiHandler(fieldState)
 
 
     override fun settings() {
-        size(480, 480)
+        size(1000, 1000)
     }
 
     override fun setup() {
@@ -55,12 +65,11 @@ class MidiDrawing() : PApplet() {
 
     override fun draw() {
         background(255)
-        if (theCircle.radius >= 1){
-            theCircle.radius -= 1
-        }
         stroke(color, color, color, alpha)
         fill(color, color, color, alpha)
-        drawCircle(theCircle)
+        updateState(particleState)
+        drawState(fieldState)
+        drawState(particleState)
     }
 }
 
