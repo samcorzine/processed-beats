@@ -18,15 +18,19 @@ fun pulse(t: Float): Float {
 }
 
 fun rotate(x: Float, y: Float, theta: Float): Pair<Float, Float>{
-    return Pair(cos(theta) * x + (-1 * sin(theta) * y), sin(theta) * y + cos(theta) * y)
+    return Pair(cos(theta) * x + (-1 * sin(theta) * y), sin(theta) * x + cos(theta) * y)
 }
 
-fun FieldState.fieldVec(x: Float, y: Float): Pair<Float,Float>{
+fun FieldState.fieldVec(x: Float, y: Float, group: Int): Pair<Float,Float> {
     val kickTimeDiff = (Duration.between(lastKick, LocalDateTime.now()).toMillis().toFloat() * 0.002f)
     val snareTimeDiff = (Duration.between(lastSnare, LocalDateTime.now()).toMillis().toFloat() * 0.002f)
-    val radius = 20.0f - (200 * pulse(kickTimeDiff))
+    val radius = 100.0f - (200 * pulse(kickTimeDiff))
+
     val rotXY = rotate(x, y, snareCount.toFloat())
-    return Pair(-radius * rotXY.first, -radius * rotXY.second)
+    val shiftedX = rotXY.first - (((snareCount * group) % 11)/22f) * 0.5f
+    val shiftedY = rotXY.second - (((snareCount + group) % 11)/22f) * 0.5f
+    return Pair(-radius * shiftedX, -radius * shiftedY)
+
 }
 
 
@@ -51,7 +55,7 @@ fun PApplet.drawState(field: FieldState) {
             val floatWidth = this.width.toFloat()
             val x_val = (i.toFloat() * (floatHeight/precision.toFloat())) / floatHeight
             val y_val = (j.toFloat() * (floatWidth/precision.toFloat())) / floatWidth
-            val field_val = field.fieldVec((x_val - 0.5f) * 2, (y_val - 0.5f) * 2)
+            val field_val = field.fieldVec((x_val - 0.5f) * 2, (y_val - 0.5f) * 2, 1)
             this.arrow(
                     (x_val * floatWidth) - (0.5f * field_val.first),
                     (y_val * floatHeight) - (0.5f * field_val.second),

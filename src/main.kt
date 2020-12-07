@@ -21,7 +21,7 @@ class MidiDrawing() : PApplet() {
 
 
     val particleState = ParticleState(
-            randomX.zip(randomY).map{pair -> Particle((pair.first - 0.5f) * 2, (pair.second - 0.5f) * 2)},
+            randomX.zip(randomY).mapIndexed{index, pair -> Particle((pair.first - 0.5f) * 2, (pair.second - 0.5f) * 2, index % 7)},
             fieldState
     )
 
@@ -66,6 +66,7 @@ class MidiDrawing() : PApplet() {
     override fun draw() {
         background(255)
         stroke(color, color, color, alpha)
+//        noStroke()
         fill(color, color, color, alpha)
         updateState(particleState)
         drawState(fieldState)
