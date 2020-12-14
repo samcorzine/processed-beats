@@ -15,6 +15,7 @@ repositories {
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.2.0'
     compile 'org.processing:core:3.3.6'
+    compile 'com.google.code.gson:gson:2.8.6'
 }
 
 sourceSets {
