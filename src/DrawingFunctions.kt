@@ -23,8 +23,7 @@ fun PApplet.arrow(x1: Float, y1: Float, x2: Float, y2: Float) {
     popMatrix();
 }
 
-fun PApplet.drawField(field: FieldInterface) {
-    val precision = 25
+fun PApplet.drawField(field: FieldInterface, precision: Int = 25) {
     val floatHeight = this.height.toFloat()
     val floatWidth = this.width.toFloat()
     for (i in 0..precision) {
@@ -225,8 +224,8 @@ fun PApplet.drawGrid(field: FieldInterface, precision: Int) {
 //    fill(color.x, color.y, color.z)
     (0 until precision).map{ i->
         (0 until precision).map{ j->
-            val color = partColor((LocalDateTime.now().second.toFloat() * 0.1f) + (i * 0.01f), 50f)
-            fill(color.x, color.y, color.z)
+//            val color = partColor((LocalDateTime.now().second.toFloat() * 0.1f) + (i * 0.01f), 50f)
+//            fill(color.x, color.y, color.z)
              this.quad(
                     movedPoints[i][j].x,
                     movedPoints[i][j].y,

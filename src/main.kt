@@ -13,6 +13,8 @@ import java.util.*
 import javax.sound.midi.MidiSystem
 import javax.sound.midi.MidiUnavailableException
 import javax.sound.midi.Transmitter
+import kotlinx.coroutines.*
+
 
 class MidiDrawing() : PApplet() {
 
@@ -50,7 +52,7 @@ class MidiDrawing() : PApplet() {
     )
 
     val fieldState = ChargedElements(
-            testAnchorLines
+            featurePairs
     )
     val midiState = MidiState(
             LocalDateTime.now(),
@@ -60,10 +62,12 @@ class MidiDrawing() : PApplet() {
             5,
             LocalDateTime.now(),
             0,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            false
     )
     val indices = 1..100
-    val randomX = indices.map{Random().nextFloat()}// generated random from 1 to 9 included
+    val randomX = indices.map{ t -> Random().nextFloat()}// generated random from 1 to 9 included
     val randomY = indices.map{Random().nextFloat()}// generated random from 1 to 9 included
 
 
@@ -117,6 +121,7 @@ class MidiDrawing() : PApplet() {
         frameRate(30f)
         ellipseMode(RADIUS)
         background(255)
+//        noLoop()
     }
 
     override fun draw() {
@@ -125,12 +130,22 @@ class MidiDrawing() : PApplet() {
 //        noStroke()
         fill(color, color, color, alpha)
 //        updateState(particleState)
-//        drawElements(fieldState)
-//        drawField(fieldState)
-//        drawPolyFieldState(fieldState, midiState.polygon(5), 5)
+        val field = ChargedElements(featurePairs)
+//        drawElements(field)
+//        drawField(field, 60)
+//        drawPolyFieldState(fieldState, midiState.polygon(100), 5)
+        drawGrid(field, 75)
+
 //        drawFaceFlowState(fieldState)
 //        drawState(particleState)
-        drawGrid(ChargedElements(midiState.pulseSquare()), 15)
+//        val framerate = 10
+//        for (i in 0..100) {
+//            val t = i.toDouble()/framerate.toDouble()
+//            val midi = toMidiState("testmidi.mid", t)
+//            drawGrid(ChargedElements(midi.pulseSquare()), 15)
+//            saveFrame("output/frames${i}.png")
+//        }
+//        println("done")
     }
 }
 

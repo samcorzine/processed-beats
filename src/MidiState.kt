@@ -15,10 +15,12 @@ class MidiState(
         var prevMelodyNote: Int,
         var prevMelodyTime: LocalDateTime,
         var currMelodyNote: Int,
-        var currMelodyTime: LocalDateTime
-): FieldInterface{
+        var currMelodyTime: LocalDateTime,
+        var now: LocalDateTime,
+        var inRenderMode: Boolean
+): FieldInterface {
     override fun fieldVec(point: PVector): PVector {
-        val snareTimeDiff = (Duration.between(lastSnare, LocalDateTime.now()).toMillis().toFloat() * 0.002f)
+        val snareTimeDiff = (Duration.between(lastSnare, now()).toMillis().toFloat() * 0.002f)
         val radius = 100.0f - (200 * pulse(kickTimeDiff()))
         val rotXY = rotate(point, snareCount.toFloat())
         val shifted = PVector.add( rotXY,
@@ -30,12 +32,15 @@ class MidiState(
             num ->
                 PVector.mult(
                         PVector(
-                        0.05f * (snareCount % 7 + 1) * cos(num * 2f * PI * (1f / nSides)).toFloat(),
-                        0.05f * (snareCount % 5 + 1) * sin(num * 2f * PI * (1f / nSides)).toFloat()),
+                        0.1f * (snareCount % 7 + 1) * cos(num * 2f * PI * (1f / nSides)).toFloat(),
+                        0.1f * (snareCount % 5 + 1) * sin(num * 2f * PI * (1f / nSides)).toFloat()),
                         pulse(kickTimeDiff()) + 0.5f
                 )
 
         }
+    }
+    fun polygonSides(nSides: Int): List<Pair<PVector, PVector>>{
+        return this.polygon(nSides).slice(0..nSides-2).zip(this.polygon(nSides).slice(1 until nSides))
     }
     fun pulseSquare(): List<Pair<PVector, PVector>>{
         val size = (pulse(kickTimeDiff()) * -1.8F) + 0.8F
@@ -46,20 +51,11 @@ class MidiState(
                 Pair(PVector(size, size), PVector(size, -size))
         )
     }
-//    fun polygon(nSides: Int): List<PVector>{
-//        return (1..nSides+1).map{
-//            num ->
-//                PVector.mult(
-//                        PVector(
-//                        0.05f * (snareCount % 7 + 1) * cos(num * 2f * PI * (1f / nSides)).toFloat(),
-//                        0.05f * (snareCount % 5 + 1) * sin(num * 2f * PI * (1f / nSides)).toFloat()),
-//                        pulse(kickTimeDiff()) + 0.5f
-//                )
-//
-//        }
-//    }
     fun kickTimeDiff(): Float {
-        return Duration.between(lastKick, LocalDateTime.now()).toMillis().toFloat() * 0.002f
+        return Duration.between(lastKick, now()).toMillis().toFloat() * 0.002f
+    }
+    fun now(): LocalDateTime {
+        return if (inRenderMode) now else LocalDateTime.now()
     }
 }
 
