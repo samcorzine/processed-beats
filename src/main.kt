@@ -67,7 +67,7 @@ class MidiDrawing() : PApplet() {
             false
     )
     val indices = 1..100
-    val randomX = indices.map{ t -> Random().nextFloat()}// generated random from 1 to 9 included
+    val randomX = indices.map{Random().nextFloat()}// generated random from 1 to 9 included
     val randomY = indices.map{Random().nextFloat()}// generated random from 1 to 9 included
 
 
@@ -121,7 +121,7 @@ class MidiDrawing() : PApplet() {
         frameRate(30f)
         ellipseMode(RADIUS)
         background(255)
-//        noLoop()
+        noLoop()
     }
 
     override fun draw() {
@@ -130,21 +130,21 @@ class MidiDrawing() : PApplet() {
 //        noStroke()
         fill(color, color, color, alpha)
 //        updateState(particleState)
-        val field = ChargedElements(featurePairs)
+        val field = ChargedElementsCheat(featurePairs)
 //        drawElements(field)
 //        drawField(field, 60)
 //        drawPolyFieldState(fieldState, midiState.polygon(100), 5)
-        drawGrid(field, 75)
+//        drawGrid(field, 200)
 
 //        drawFaceFlowState(fieldState)
 //        drawState(particleState)
 //        val framerate = 10
-//        for (i in 0..100) {
+        for (i in 0..1) {
 //            val t = i.toDouble()/framerate.toDouble()
 //            val midi = toMidiState("testmidi.mid", t)
-//            drawGrid(ChargedElements(midi.pulseSquare()), 15)
-//            saveFrame("output/frames${i}.png")
-//        }
+            drawGrid(field, 1000)
+            saveFrame("output/frames${i}.png")
+        }
 //        println("done")
     }
 }
