@@ -5,7 +5,7 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds
  */
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.0"
+    id "org.jetbrains.kotlin.jvm" version "1.4.20"
 }
 
 repositories {
@@ -13,9 +13,10 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.2.0'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.4.20'
     compile 'org.processing:core:3.3.6'
     compile 'com.google.code.gson:gson:2.8.6'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
 }
 
 sourceSets {

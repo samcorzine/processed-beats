@@ -55,6 +55,16 @@ fun PApplet.drawElements(elements: ChargedElements){
         )
     }
 }
+fun PApplet.drawElements(elements: ChargedElementsCheat){
+    for (p in elements.anchorPoints.map{pairvec -> Pair(pointFormat(pairvec.first), pointFormat(pairvec.second))}){
+        this.line(
+                p.first.x,
+                p.first.y,
+                p.second.x,
+                p.second.y
+        )
+    }
+}
 
 fun PApplet.drawTrangleMidiState(field: MidiState) {
     val smoothTrans = smoothstep(

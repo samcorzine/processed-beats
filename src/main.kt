@@ -82,6 +82,8 @@ class MidiDrawing() : PApplet() {
             },
             fieldState
     )
+    val reader = FaceFileReader("facedata.txt")
+
 
     fun theTransmitter(): Transmitter {
         val midiDevices = MidiSystem.getMidiDeviceInfo()
@@ -121,7 +123,7 @@ class MidiDrawing() : PApplet() {
         frameRate(30f)
         ellipseMode(RADIUS)
         background(255)
-        noLoop()
+//        noLoop()
     }
 
     override fun draw() {
@@ -130,21 +132,27 @@ class MidiDrawing() : PApplet() {
 //        noStroke()
         fill(color, color, color, alpha)
 //        updateState(particleState)
-        val field = ChargedElementsCheat(featurePairs)
+        val face = reader.getFace()
+        val field = ChargedElementsCheat(faceToAnchors(face))
+        println(face)
 //        drawElements(field)
 //        drawField(field, 60)
+        drawGrid(field, 200)
+
 //        drawPolyFieldState(fieldState, midiState.polygon(100), 5)
 //        drawGrid(field, 200)
 
 //        drawFaceFlowState(fieldState)
 //        drawState(particleState)
 //        val framerate = 10
-        for (i in 0..1) {
-//            val t = i.toDouble()/framerate.toDouble()
-//            val midi = toMidiState("testmidi.mid", t)
-            drawGrid(field, 1000)
-            saveFrame("output/frames${i}.png")
-        }
+//        for (i in 0..1) {
+////            val t = i.toDouble()/framerate.toDouble()
+////            val midi = toMidiState("testmidi.mid", t)
+////            drawGrid(field, 1000)
+//            drawElements(field)
+//            drawField(field, 60)
+//            saveFrame("output/frames${i}.png")
+//        }
 //        println("done")
     }
 }
